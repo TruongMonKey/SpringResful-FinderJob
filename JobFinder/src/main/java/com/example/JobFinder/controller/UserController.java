@@ -2,6 +2,9 @@ package com.example.JobFinder.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,40 +15,59 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.User;
 import com.example.JobFinder.service.UserService;
+import com.example.JobFinder.util.errors.IdInvalidException;
 
 @RestController
 public class UserController {
 
     public final UserService userService;
+    public final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("user/create")
-    public User createNewUser(@RequestBody User postUser) {
+    @PostMapping("users/create")
+    public ResponseEntity<User> createNewUser(@RequestBody User postUser) {
+        String hashPassword = this.passwordEncoder.encode(postUser.getPassWord());
+        postUser.setPassWord(hashPassword);
         User monkeyUser = this.userService.handleCreateUser(postUser);
-        return monkeyUser;
+        return ResponseEntity.status(HttpStatus.CREATED).body(monkeyUser);
     }
 
-    @DeleteMapping("user/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
+    @DeleteMapping("users/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") long id) throws IdInvalidException {
+        if (id >= 1500) {
+            throw new IdInvalidException("Id khong lon hon 1500");
+        }
         this.userService.handleDeleteUser(id);
-        return "delete User";
+        return ResponseEntity.status(HttpStatus.OK).body("ericUser");
     }
 
-    @GetMapping("user/{id}")
-    public User fetchUserById(@PathVariable("id") long id) {
-        return this.userService.fetchUserById(id);
+    @GetMapping("users/{id}")
+    public ResponseEntity<User> fetchUserById(@PathVariable("id") long id) {
+        User user = this.userService.fetchUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user); // 200 OK + data
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 Not Found
+        }
     }
 
-    @GetMapping("user")
-    public List<User> fetchAllUser() {
-        return this.userService.fetchAllUser();
+    @GetMapping("users")
+    public ResponseEntity<List<User>> fetchAllUser() {
+        List<User> users = this.userService.fetchAllUser();
+        return ResponseEntity.ok(users);
     }
 
-    @PutMapping("user/update/{id}")
-    public User updateUserById(@PathVariable("id") long id, @RequestBody User updateUser) {
-        return this.userService.updateUser(id, updateUser);
+    @PutMapping("users/update/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable("id") long id, @RequestBody User updateUser) {
+        User updatedUser = this.userService.updateUser(id, updateUser);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
