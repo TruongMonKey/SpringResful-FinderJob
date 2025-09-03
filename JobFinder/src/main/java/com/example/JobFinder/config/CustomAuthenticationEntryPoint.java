@@ -2,6 +2,7 @@ package com.example.JobFinder.config;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -37,7 +38,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
-        res.setError(authException.getCause().getMessage());
+        String errorMessage = Optional.ofNullable(authException.getCause())
+                .map(Throwable::getMessage)
+                .orElse(authException.getMessage());
+
         res.setMessage("Token không hợp lệ");
 
         mapper.writeValue(response.getWriter(), res);
