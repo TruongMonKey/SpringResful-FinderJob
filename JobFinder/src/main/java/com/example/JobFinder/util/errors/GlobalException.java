@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.example.JobFinder.domain.RestResponse;
+import com.example.JobFinder.domain.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalException {

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 
-import com.example.JobFinder.domain.RestResponse;
+import com.example.JobFinder.domain.response.RestResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;

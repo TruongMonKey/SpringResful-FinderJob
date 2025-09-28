@@ -1,6 +1,6 @@
 package com.example.JobFinder.util;
 
-import com.example.JobFinder.domain.RestResponse;
+import com.example.JobFinder.domain.response.RestResponse;
 import com.example.JobFinder.util.annotation.ApiMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;

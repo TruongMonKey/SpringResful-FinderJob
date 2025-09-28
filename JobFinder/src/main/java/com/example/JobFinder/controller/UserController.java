@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.ResCreateUserDTO;
-import com.example.JobFinder.domain.dto.ResUserDTO;
-import com.example.JobFinder.domain.dto.ResultPaginationDTO;
-import com.example.JobFinder.domain.dto.ResUpdateUserDTO;
+import com.example.JobFinder.domain.response.ResCreateUserDTO;
+import com.example.JobFinder.domain.response.ResUpdateUserDTO;
+import com.example.JobFinder.domain.response.ResUserDTO;
+import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.service.UserService;
 import com.example.JobFinder.util.annotation.ApiMessage;
 import com.example.JobFinder.util.errors.IdInvalidException;

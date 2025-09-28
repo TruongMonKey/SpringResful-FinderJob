@@ -11,10 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.ResUserDTO;
-import com.example.JobFinder.domain.dto.ResultPaginationDTO;
-import com.example.JobFinder.domain.dto.ResUpdateUserDTO;
-import com.example.JobFinder.domain.dto.ResCreateUserDTO;
+import com.example.JobFinder.domain.response.ResCreateUserDTO;
+import com.example.JobFinder.domain.response.ResUpdateUserDTO;
+import com.example.JobFinder.domain.response.ResUserDTO;
+import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.repository.UserRepository;
 
 @Service

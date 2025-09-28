@@ -1,4 +1,4 @@
-package com.example.JobFinder.domain;
+package com.example.JobFinder.domain.response;
 
 public class RestResponse<T> {
     private int statusCode;

@@ -1,4 +1,4 @@
-package com.example.JobFinder.domain.dto;
+package com.example.JobFinder.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

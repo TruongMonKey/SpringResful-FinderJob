@@ -3,7 +3,7 @@ package com.example.JobFinder.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.Company;
-import com.example.JobFinder.domain.dto.ResultPaginationDTO;
+import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.service.CompanyService;
 import com.turkraft.springfilter.boot.Filter;
 

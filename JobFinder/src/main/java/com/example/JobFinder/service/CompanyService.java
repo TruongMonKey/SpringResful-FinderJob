@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.JobFinder.domain.Company;
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.ResultPaginationDTO;
+import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.repository.CompanyRepository;
 
 @Service

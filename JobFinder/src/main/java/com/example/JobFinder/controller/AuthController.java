@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.ResLoginDTO;
 import com.example.JobFinder.domain.request.ReqLoginDTO;
+import com.example.JobFinder.domain.response.ResLoginDTO;
 import com.example.JobFinder.service.UserService;
 import com.example.JobFinder.util.SecurityUtil;
 import com.example.JobFinder.util.annotation.ApiMessage;
