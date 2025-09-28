@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.Meta;
 import com.example.JobFinder.domain.dto.ResUserDTO;
 import com.example.JobFinder.domain.dto.ResultPaginationDTO;
 import com.example.JobFinder.domain.dto.ResUpdateUserDTO;
@@ -63,7 +62,7 @@ public class UserService {
     public ResultPaginationDTO fetchAllUser(Specification<User> spec, Pageable pageable) {
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
         mt.setPage(pageable.getPageNumber() + 1);
         mt.setPageSize(pageable.getPageSize());
