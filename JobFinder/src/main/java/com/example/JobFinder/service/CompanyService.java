@@ -12,14 +12,17 @@ import com.example.JobFinder.domain.Company;
 import com.example.JobFinder.domain.User;
 import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.repository.CompanyRepository;
+import com.example.JobFinder.repository.UserRepository;
 
 @Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
         this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
     }
 
     public Company handleSaveCompany(Company company) {
@@ -54,13 +57,18 @@ public class CompanyService {
         return null;
     }
 
-    public boolean deleteCompany(Long id) {
-        Optional<Company> company = companyRepository.findById(id);
-        if (company.isPresent()) {
-            companyRepository.deleteById(id);
-            return true;
+    public void handleDeleteCompany(Long id) {
+        Optional<Company> companyOptional = this.companyRepository.findById(id);
+        if (companyOptional.isPresent()) {
+            Company com = companyOptional.get();
+            List<User> users = this.userRepository.findByCompany(com);
+            this.userRepository.deleteAll(users);
         }
-        return false;
+        this.companyRepository.deleteById(id);
+    }
+
+    public Optional<Company> findById(Long id) {
+        return this.companyRepository.findById(id);
     }
 
 }
