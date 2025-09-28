@@ -14,8 +14,8 @@ import com.example.JobFinder.domain.User;
 import com.example.JobFinder.domain.dto.Meta;
 import com.example.JobFinder.domain.dto.ResUserDTO;
 import com.example.JobFinder.domain.dto.ResultPaginationDTO;
-import com.example.JobFinder.domain.dto.UpdateUserDTO;
-import com.example.JobFinder.domain.dto.CreateUserDTO;
+import com.example.JobFinder.domain.dto.ResUpdateUserDTO;
+import com.example.JobFinder.domain.dto.ResCreateUserDTO;
 import com.example.JobFinder.repository.UserRepository;
 
 @Service
@@ -92,8 +92,8 @@ public class UserService {
         return this.userRepository.existsByEmail(email);
     }
 
-    public CreateUserDTO convertCreateUserDTO(User user) {
-        CreateUserDTO res = new CreateUserDTO();
+    public ResCreateUserDTO convertCreateUserDTO(User user) {
+        ResCreateUserDTO res = new ResCreateUserDTO();
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -130,8 +130,8 @@ public class UserService {
         return currentUser;
     }
 
-    public UpdateUserDTO convertToUpdateUserDTO(User user) {
-        UpdateUserDTO res = new UpdateUserDTO();
+    public ResUpdateUserDTO convertToUpdateUserDTO(User user) {
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
         res.setId(user.getId());
         res.setName(user.getName());
         res.setAge(user.getAge());

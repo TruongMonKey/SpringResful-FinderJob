@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateUserDTO {
+public class ResUpdateUserDTO {
     private long id;
     private String name;
     private GenderEnum gender;

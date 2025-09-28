@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.User;
-import com.example.JobFinder.domain.dto.CreateUserDTO;
+import com.example.JobFinder.domain.dto.ResCreateUserDTO;
 import com.example.JobFinder.domain.dto.ResUserDTO;
 import com.example.JobFinder.domain.dto.ResultPaginationDTO;
-import com.example.JobFinder.domain.dto.UpdateUserDTO;
+import com.example.JobFinder.domain.dto.ResUpdateUserDTO;
 import com.example.JobFinder.service.UserService;
 import com.example.JobFinder.util.annotation.ApiMessage;
 import com.example.JobFinder.util.errors.IdInvalidException;
@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping("users/create")
     @ApiMessage("Create a new user")
-    public ResponseEntity<CreateUserDTO> createNewUser(@Valid @RequestBody User postUser) throws IdInvalidException {
+    public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postUser) throws IdInvalidException {
         boolean isEmailExist = this.userService.isEmailExist(postUser.getEmail());
         if (isEmailExist) {
             throw new IdInvalidException("Email " + postUser.getEmail() + " đã tồn tại, vui lòng sử dụng email khác");
@@ -83,9 +83,9 @@ public class UserController {
 
     @PutMapping("users/update/{id}")
     @ApiMessage("update a users")
-    public ResponseEntity<UpdateUserDTO> updateUserById(
+    public ResponseEntity<ResUpdateUserDTO> updateUserById(
             @PathVariable("id") long id,
-            @RequestBody UpdateUserDTO dto) throws IdInvalidException {
+            @RequestBody ResUpdateUserDTO dto) throws IdInvalidException {
 
         User currentUser = userService.fetchUserById(id);
         if (currentUser == null) {
