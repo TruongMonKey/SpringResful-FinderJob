@@ -1,4 +1,4 @@
-package com.example.JobFinder.domain.dto;
+package com.example.JobFinder.domain.request;
 
 import jakarta.validation.constraints.NotBlank;
 
