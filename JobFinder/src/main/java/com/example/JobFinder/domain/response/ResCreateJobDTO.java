@@ -3,7 +3,6 @@ package com.example.JobFinder.domain.response;
 import java.time.Instant;
 import java.util.List;
 
-import com.example.JobFinder.domain.Skill;
 import com.example.JobFinder.util.constant.LevelEnum;
 
 import lombok.Getter;
