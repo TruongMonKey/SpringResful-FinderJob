@@ -5,6 +5,7 @@ import com.example.JobFinder.util.annotation.ApiMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -47,6 +48,10 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
         // Nếu lỗi (status >= 400) thì trả body gốc (ExceptionHandler xử lý riêng)
         if (status >= 400) {
+            return body;
+        }
+
+        if (body instanceof String || body instanceof Resource) {
             return body;
         }
 
