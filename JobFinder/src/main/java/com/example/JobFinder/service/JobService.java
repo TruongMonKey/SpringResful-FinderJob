@@ -9,11 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.example.JobFinder.domain.Company;
 import com.example.JobFinder.domain.Job;
 import com.example.JobFinder.domain.Skill;
 import com.example.JobFinder.domain.response.ResCreateJobDTO;
 import com.example.JobFinder.domain.response.ResUpdateJobDTO;
 import com.example.JobFinder.domain.response.ResultPaginationDTO;
+import com.example.JobFinder.repository.CompanyRepository;
 import com.example.JobFinder.repository.JobRepository;
 import com.example.JobFinder.repository.SkillRepository;
 import com.example.JobFinder.util.mapper.JobMapper;
@@ -22,10 +24,13 @@ import com.example.JobFinder.util.mapper.JobMapper;
 public class JobService {
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
+    private final CompanyRepository companyRepository;
 
-    public JobService(JobRepository jobRepository, SkillRepository skillRepository) {
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository,
+            CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.skillRepository = skillRepository;
+        this.companyRepository = companyRepository;
     }
 
     public ResCreateJobDTO createJob(Job j) {
@@ -36,30 +41,45 @@ public class JobService {
             List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
             j.setSkills(dbSkills);
         }
+
+        if (j.getCompany() != null) {
+            Optional<Company> cOptional = this.companyRepository.findById(j.getCompany().getId());
+            if (cOptional.isPresent()) {
+                j.setCompany(cOptional.get());
+            }
+        }
+
         Job currentJob = this.jobRepository.save(j);
 
         return JobMapper.mapToResCreateJobDTO(currentJob);
     }
 
-    public ResUpdateJobDTO update(Job j) {
+    public ResUpdateJobDTO update(Job j, Job jobDB) {
         Job currentJob = jobRepository.findById(j.getId())
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + j.getId()));
-
-        currentJob.setName(j.getName());
-        currentJob.setSalary(j.getSalary());
-        currentJob.setQuantity(j.getQuantity());
-        currentJob.setLocation(j.getLocation());
-        currentJob.setLevel(j.getLevel());
-        currentJob.setActive(j.isActive());
-        currentJob.setStartDate(j.getStartDate());
-        currentJob.setEndDate(j.getEndDate());
-
         if (j.getSkills() != null && !j.getSkills().isEmpty()) {
             List<Long> reqSkills = j.getSkills().stream().map(Skill::getId).toList();
-            currentJob.setSkills(skillRepository.findByIdIn(reqSkills));
+            List<Skill> dbSkills = this.skillRepository.findByIdIn(reqSkills);
+            jobDB.setSkills(dbSkills);
         }
 
-        Job savedJob = jobRepository.save(currentJob);
+        if (j.getCompany() != null) {
+            Optional<Company> cOptional = this.companyRepository.findById(j.getCompany().getId());
+            if (cOptional.isPresent()) {
+                jobDB.setCompany(cOptional.get());
+            }
+        }
+
+        jobDB.setName(j.getName());
+        jobDB.setSalary(j.getSalary());
+        jobDB.setQuantity(j.getQuantity());
+        jobDB.setLocation(j.getLocation());
+        jobDB.setLevel(j.getLevel());
+        jobDB.setActive(j.isActive());
+        jobDB.setStartDate(j.getStartDate());
+        jobDB.setEndDate(j.getEndDate());
+
+        Job savedJob = jobRepository.save(jobDB);
         return JobMapper.mapToResUpdateJobDTO(savedJob);
     }
 

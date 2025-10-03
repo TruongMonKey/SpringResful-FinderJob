@@ -3,11 +3,17 @@ package com.example.JobFinder.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.JobFinder.domain.Company;
+import com.example.JobFinder.domain.Resume;
+import com.example.JobFinder.domain.response.ResFetchResumeDTO;
 import com.example.JobFinder.domain.response.ResultPaginationDTO;
 import com.example.JobFinder.service.CompanyService;
+import com.example.JobFinder.util.annotation.ApiMessage;
+import com.example.JobFinder.util.errors.IdInvalidException;
 import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
+
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -57,5 +63,15 @@ public class CompanyController {
     public ResponseEntity<Void> deleteCompany(@PathVariable("id") long id) {
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/{id}")
+    @ApiMessage("Get company by id success")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") long id) throws IdInvalidException {
+        Optional<Company> currentCompany = this.companyService.findById(id);
+        if (currentCompany.isEmpty()) {
+            throw new IdInvalidException("Company with id : " + id + "not exits");
+        }
+        return ResponseEntity.ok().body(currentCompany.get());
     }
 }

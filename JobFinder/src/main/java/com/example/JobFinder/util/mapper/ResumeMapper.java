@@ -15,6 +15,10 @@ public class ResumeMapper {
         dto.setUpdatedAt(resume.getUpdatedAt());
         dto.setCreatedBy(resume.getUpdatedBy());
 
+        if (resume.getJob() != null) {
+            dto.setCompanyName(resume.getJob().getCompany().getName());
+        }
+
         dto.setUser(new ResFetchResumeDTO.UserResume(resume.getUser().getId(), resume.getUser().getName()));
         dto.setJob(new ResFetchResumeDTO.JobResume(resume.getJob().getId(), resume.getJob().getName()));
 
