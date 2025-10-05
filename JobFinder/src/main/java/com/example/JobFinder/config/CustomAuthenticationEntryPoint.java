@@ -1,7 +1,6 @@
 package com.example.JobFinder.config;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;

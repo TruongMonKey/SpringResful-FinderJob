@@ -67,4 +67,14 @@ public class RoleController {
             Pageable pageable) {
         return ResponseEntity.ok(this.roleService.getRoles(spec, pageable));
     }
+
+    @GetMapping("/fetch/{id}")
+    @ApiMessage("Fetch role by id")
+    public ResponseEntity<Role> getRoles(@PathVariable("id") long id) throws IdInvalidException {
+        Role role = this.roleService.fetchById(id);
+        if (role != null) {
+            throw new IdInvalidException("Resume with id: " + id + " does not exist");
+        }
+        return ResponseEntity.ok().body(role);
+    }
 }

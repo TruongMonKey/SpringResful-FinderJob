@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.JobFinder.domain.Job;
 import com.example.JobFinder.domain.Resume;
-import com.example.JobFinder.domain.Skill;
 import com.example.JobFinder.domain.response.ResCreateResumeDTO;
 import com.example.JobFinder.domain.response.ResFetchResumeDTO;
 import com.example.JobFinder.domain.response.ResUpdateResumeDTO;

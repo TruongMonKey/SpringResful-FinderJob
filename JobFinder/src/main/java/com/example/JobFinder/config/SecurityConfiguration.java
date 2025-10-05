@@ -37,7 +37,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint cusEntryPoint)
             throws Exception {
         String[] whiteList = {
-                "/", "/api/login", "/api/auth/refresh", "/storage/**", "/api/companies/**", "/api/jobs/**"
+                "/", "/api/login", "/api/auth/refresh", "/storage/**",
+                "/api/companies/**", "/api/jobs/**", "/api/register"
         };
         http
                 .csrf(c -> c.disable())
