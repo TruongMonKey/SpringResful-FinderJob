@@ -23,7 +23,7 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/api")
 public class RoleController {
 
     private RoleService roleService;
@@ -32,7 +32,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/roles")
     @ApiMessage("Create a role")
     public ResponseEntity<Role> create(@Valid @RequestBody Role r) throws IdInvalidException {
         if (this.roleService.isRoleExist(r.getName())) {
@@ -41,7 +41,7 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.create(r));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/roles")
     @ApiMessage("Update a role")
     public ResponseEntity<Role> update(@Valid @RequestBody Role r) throws IdInvalidException {
         if (this.roleService.fetchById(r.getId()) == null) {
@@ -51,7 +51,7 @@ public class RoleController {
         return ResponseEntity.ok().body(this.roleService.update(r));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/roles/{id}")
     @ApiMessage("Delete a role")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         if (this.roleService.fetchById(id) == null) {
@@ -61,14 +61,14 @@ public class RoleController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/fetch")
+    @GetMapping("/roles")
     @ApiMessage("Fetch roles")
     public ResponseEntity<ResultPaginationDTO> getRoles(@Filter Specification<Role> spec,
             Pageable pageable) {
         return ResponseEntity.ok(this.roleService.getRoles(spec, pageable));
     }
 
-    @GetMapping("/fetch/{id}")
+    @GetMapping("/roles/{id}")
     @ApiMessage("Fetch role by id")
     public ResponseEntity<Role> getRoles(@PathVariable("id") long id) throws IdInvalidException {
         Role role = this.roleService.fetchById(id);

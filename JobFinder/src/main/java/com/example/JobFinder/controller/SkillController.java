@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/api/skills")
+@RequestMapping("/api")
 public class SkillController {
 
     private final SkillService skillService;
@@ -33,7 +33,7 @@ public class SkillController {
         this.skillService = skillService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/skills")
     @ApiMessage("Create a new Skill")
     public ResponseEntity<Skill> createSkill(@Valid @RequestBody Skill skill) throws IdInvalidException {
         boolean existsByName = this.skillService.existsByName(skill.getName());
@@ -45,7 +45,7 @@ public class SkillController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSkill);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/skills")
     @ApiMessage("Update Skill")
     public ResponseEntity<Skill> updateSkill(@RequestBody Skill skill) throws IdInvalidException {
         Skill updateSkill = skillService.updateSkill(skill);
@@ -61,7 +61,7 @@ public class SkillController {
         return ResponseEntity.status(HttpStatus.OK).body(this.skillService.getAllSkill(spec, pageable));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/skills/{id}")
     @ApiMessage("Delete a skill")
     public ResponseEntity<Void> deleteSkill(@PathVariable("id") long id) throws IdInvalidException {
         Skill currentSkill = this.skillService.fetchSkillById(id);

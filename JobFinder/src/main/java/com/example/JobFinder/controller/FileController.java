@@ -28,6 +28,7 @@ import com.example.JobFinder.util.errors.StorageException;
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
+
     @Value("${monkey.upload-file.base-uri}")
     private String baseURI;
 
@@ -38,52 +39,60 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    @ApiMessage("Upload single file")
+    @ApiMessage("Upload single file successfully")
     public ResponseEntity<ResUploadFileDTO> handleFileUpload(
-            @RequestParam(name = "file", required = false) MultipartFile file,
-            @RequestParam("folder") String folder) throws URISyntaxException, IOException, StorageException {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("folder") String folder)
+            throws URISyntaxException, IOException, StorageException {
+
         if (file == null || file.isEmpty()) {
-            throw new StorageException("File is empty. Please upload");
+            throw new StorageException("File is empty. Please upload a valid file.");
         }
+
         String fileName = file.getOriginalFilename();
+        if (fileName == null) {
+            throw new StorageException("File name is invalid.");
+        }
+
         List<String> allowedExtensions = Arrays.asList("pdf", "jpg", "jpeg", "png", "doc", "docx");
-        boolean isValid = allowedExtensions.stream().anyMatch(item -> fileName.toLowerCase().endsWith(item));
+        boolean isValid = allowedExtensions.stream()
+                .anyMatch(ext -> fileName.toLowerCase().endsWith("." + ext));
 
         if (!isValid) {
             throw new StorageException(
-                    "File is not in correct format, please upload again." + allowedExtensions.toString());
+                    "File format not supported. Please upload one of: " + allowedExtensions);
         }
 
         this.fileService.createDirectory(baseURI + folder);
 
-        String uploadFile = this.fileService.store(file, folder);
-        ResUploadFileDTO res = new ResUploadFileDTO(uploadFile, Instant.now());
+        String uploadedPath = this.fileService.store(file, folder);
+        ResUploadFileDTO res = new ResUploadFileDTO(uploadedPath, Instant.now());
 
-        return ResponseEntity.ok().body(res);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/download")
-    @ApiMessage("Download a file")
-    public ResponseEntity<Resource> download(
-            @RequestParam(name = "file", required = false) String fileName,
-            @RequestParam(name = "folder", required = false) String folder)
+    @ApiMessage("Download file successfully")
+    public ResponseEntity<Resource> downloadFile(
+            @RequestParam("file") String fileName,
+            @RequestParam("folder") String folder)
             throws FileNotFoundException, URISyntaxException, StorageException {
-        if (fileName == null || folder == null) {
-            throw new StorageException("Missing required params(file or folder null)");
+
+        if (fileName == null || folder == null || fileName.isBlank() || folder.isBlank()) {
+            throw new StorageException("Missing required parameters: 'file' or 'folder'.");
         }
 
-        long fileLenght = this.fileService.getFileLenght(fileName, folder);
-        if (fileLenght == 0) {
-            throw new StorageException("File with name: " + fileName + " not found");
+        long fileLength = this.fileService.getFileLenght(fileName, folder);
+        if (fileLength == 0) {
+            throw new StorageException("File with name '" + fileName + "' not found.");
         }
 
         InputStreamResource resource = this.fileService.getResource(fileName, folder);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .contentLength(fileLenght)
+                .contentLength(fileLength)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
-
 }

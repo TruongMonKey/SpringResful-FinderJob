@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/api/jobs")
+@RequestMapping("/api")
 public class JobController {
 
     private final JobService jobService;
@@ -37,13 +37,13 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/jobs")
     @ApiMessage("Create a skill")
     public ResponseEntity<ResCreateJobDTO> createJob(@Valid @RequestBody Job job) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.jobService.createJob(job));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/jobs")
     @ApiMessage("Update a job")
     public ResponseEntity<ResUpdateJobDTO> update(@Valid @RequestBody Job job) throws IdInvalidException {
         Optional<Job> currentJob = this.jobService.fetchJobById(job.getId());
@@ -53,7 +53,7 @@ public class JobController {
         return ResponseEntity.ok().body(this.jobService.update(job, currentJob.get()));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/jobs/{id}")
     @ApiMessage("Delete a job by id")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Job> currentJob = this.jobService.fetchJobById(id);

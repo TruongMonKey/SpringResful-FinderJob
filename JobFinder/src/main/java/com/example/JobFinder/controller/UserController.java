@@ -38,7 +38,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("users/create")
+    @PostMapping("/users")
     @ApiMessage("Create a new user")
     public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postUser) throws IdInvalidException {
         boolean isEmailExist = this.userService.isEmailExist(postUser.getEmail());
@@ -52,7 +52,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertCreateUserDTO(monkeyUser));
     }
 
-    @DeleteMapping("users/delete/{id}")
+    @DeleteMapping("users/{id}")
     @ApiMessage("Delete a user")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) throws IdInvalidException {
         User currentUser = this.userService.fetchUserById(id);
@@ -81,7 +81,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchAllUser(spec, pageable));
     }
 
-    @PutMapping("users/update")
+    @PutMapping("/users")
     @ApiMessage("update a users")
     public ResponseEntity<ResUpdateUserDTO> updateUserById(
             @RequestBody User user) throws IdInvalidException {

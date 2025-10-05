@@ -63,7 +63,7 @@ public class CompanyController {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/companies/{id}")
     @ApiMessage("Get company by id success")
     public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Company> currentCompany = this.companyService.findById(id);

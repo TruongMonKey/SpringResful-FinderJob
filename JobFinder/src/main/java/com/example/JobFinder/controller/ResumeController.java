@@ -28,7 +28,7 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/resumes")
+@RequestMapping("/api")
 public class ResumeController {
     private final ResumeService resumeService;
 
@@ -36,7 +36,7 @@ public class ResumeController {
         this.resumeService = resumeService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/resumes")
     @ApiMessage("Create resume success")
     public ResponseEntity<ResCreateResumeDTO> createResume(@Valid @RequestBody Resume resume)
             throws IdInvalidException {
@@ -47,7 +47,7 @@ public class ResumeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.resumeService.create(resume));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/resumes")
     @ApiMessage("Update resume success")
     public ResponseEntity<ResUpdateResumeDTO> updateResume(@RequestBody Resume resume) throws IdInvalidException {
         Optional<Resume> reqResumeOptional = this.resumeService.fetchById(resume.getId());
@@ -61,7 +61,7 @@ public class ResumeController {
         return ResponseEntity.ok().body(this.resumeService.update(reqResume));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/resumes/{id}")
     @ApiMessage("Delete resume success")
     public ResponseEntity<Void> deleteResume(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Resume> currentResume = this.resumeService.fetchById(id);
@@ -72,7 +72,7 @@ public class ResumeController {
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/resumes/{id}")
     @ApiMessage("Get resume by id success")
     public ResponseEntity<ResFetchResumeDTO> getResumeById(@PathVariable("id") long id) throws IdInvalidException {
         Optional<Resume> currentResume = this.resumeService.fetchById(id);
@@ -82,7 +82,7 @@ public class ResumeController {
         return ResponseEntity.ok().body(this.resumeService.getResume(currentResume.get()));
     }
 
-    @GetMapping("/")
+    @GetMapping("/resumes")
     @ApiMessage("Get all resume success")
     public ResponseEntity<ResultPaginationDTO> fetchAll(
             @Filter Specification<Resume> spec,
@@ -91,7 +91,7 @@ public class ResumeController {
         return ResponseEntity.ok().body(this.resumeService.fetchAllResume(spec, pageable));
     }
 
-    @PostMapping("/by-user")
+    @PostMapping("/resumes/by-user")
     @ApiMessage("Get list resume by user success")
     public ResponseEntity<ResultPaginationDTO> fetchResumeByUser(Pageable pageable) {
         return ResponseEntity.ok().body(this.resumeService.fetchResumeByUser(pageable));

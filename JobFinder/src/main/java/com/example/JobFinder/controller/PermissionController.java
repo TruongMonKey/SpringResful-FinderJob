@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/permissions")
+@RequestMapping("/api")
 public class PermissionController {
     public final PermissionService permissionService;
 
@@ -32,7 +32,7 @@ public class PermissionController {
         this.permissionService = permissionService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/permissions")
     @ApiMessage("Create a permission")
     public ResponseEntity<Permission> create(@Valid @RequestBody Permission p) throws IdInvalidException {
         if (this.permissionService.isPermissionExist(p)) {
@@ -41,7 +41,7 @@ public class PermissionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.permissionService.create(p));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/permissions")
     @ApiMessage("Update a permission")
     public ResponseEntity<Permission> update(@RequestBody Permission p) throws IdInvalidException {
         if (this.permissionService.fetchById(p.getId()) == null) {
@@ -57,7 +57,7 @@ public class PermissionController {
         return ResponseEntity.ok().body(this.permissionService.update(p));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/permissions/{id}")
     @ApiMessage("Delete a permission")
     public ResponseEntity<Void> delete(@PathVariable("id") long id) throws IdInvalidException {
         if (this.permissionService.fetchById(id) == null) {
@@ -67,7 +67,7 @@ public class PermissionController {
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping("/fetch")
+    @GetMapping("/permissions")
     @ApiMessage("Fetch a permission")
     public ResponseEntity<ResultPaginationDTO> getPermissions(@Filter Specification<Permission> spec,
             Pageable pageable) {
