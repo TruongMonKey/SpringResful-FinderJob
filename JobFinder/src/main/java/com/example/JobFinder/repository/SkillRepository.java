@@ -12,5 +12,5 @@ import com.example.JobFinder.domain.Skill;
 public interface SkillRepository extends JpaRepository<Skill, Long>, JpaSpecificationExecutor<Skill> {
     boolean existsByName(String name);
 
-    List<Skill> findByIdIn(List<Long> ids);
+    List<Skill> findByIdIn(List<Long> id);
 }
