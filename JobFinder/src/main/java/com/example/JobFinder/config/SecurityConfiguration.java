@@ -39,7 +39,7 @@ public class SecurityConfiguration {
             throws Exception {
         String[] whiteList = {
                 "/", "/api/login", "/api/auth/refresh", "/storage/**",
-                "/api/companies/**", "/api/jobs/**", "/api/register"
+                "/api/companies/**", "/api/jobs/**", "/api/register", "/api/email"
         };
         http
                 .csrf(c -> c.disable())
